@@ -1,13 +1,9 @@
 package com.sekarre.helpcenterchat.DTO.notification;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import static com.sekarre.helpcenterchat.util.DateUtil.DATE_TIME_FORMAT;
 
 
 @Getter
@@ -25,7 +21,5 @@ public class NotificationQueueDTO implements Serializable {
     private String message;
     private String destinationId;
     private String eventType;
-
-    @JsonFormat(pattern = DATE_TIME_FORMAT)
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

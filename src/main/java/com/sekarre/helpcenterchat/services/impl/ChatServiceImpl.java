@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.sekarre.helpcenterchat.security.UserDetailsHelper.getCurrentUser;
-import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTime;
+import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTimeFormatted;
 
 
 @RequiredArgsConstructor
@@ -79,7 +79,7 @@ public class ChatServiceImpl implements ChatService {
         notificationSender.sendNotification(NotificationQueueDTO.builder()
                 .eventType(EventType.NEW_CHAT_MESSAGE.name())
                 .destinationId(channelId)
-                .createdAt(getCurrentDateTime())
+                .createdAt(getCurrentDateTimeFormatted())
                 .userId(userId)
                 .build());
     }
