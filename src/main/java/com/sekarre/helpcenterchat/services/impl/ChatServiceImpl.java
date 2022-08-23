@@ -3,8 +3,11 @@ package com.sekarre.helpcenterchat.services.impl;
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
 import com.sekarre.helpcenterchat.DTO.ChatMessageDTO;
+import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.Chat;
 import com.sekarre.helpcenterchat.domain.ChatMessage;
+import com.sekarre.helpcenterchat.domain.User;
+import com.sekarre.helpcenterchat.domain.enums.EventType;
 import com.sekarre.helpcenterchat.exceptions.chat.ChatNotFoundException;
 import com.sekarre.helpcenterchat.mappers.ChatMapper;
 import com.sekarre.helpcenterchat.mappers.ChatMessageMapper;
@@ -12,6 +15,7 @@ import com.sekarre.helpcenterchat.repositories.ChatMessageRepository;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
 import com.sekarre.helpcenterchat.services.ChatService;
 import com.sekarre.helpcenterchat.services.UserService;
+import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import com.sekarre.helpcenterchat.util.RandomStringGeneratorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.sekarre.helpcenterchat.security.UserDetailsHelper.getCurrentUser;
+import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTime;
 
 
 @RequiredArgsConstructor
@@ -33,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatMessageMapper chatMessageMapper;
     private final ChatMapper chatMapper;
     private final UserService userService;
-//    private final EventEmitterService eventEmitterService;
+    private final NotificationSender notificationSender;
 
 
     @Override
@@ -58,18 +63,25 @@ public class ChatServiceImpl implements ChatService {
         log.debug("User id: " + getCurrentUser().getId() + " message: " + chatMessageDTO.getMessage());
         ChatMessage chatMessage = createNewChatMessage(chatMessageDTO, channelId);
         ChatMessageDTO returnChatMessageDTO = chatMessageMapper.mapMessageToChatMessageDTO(chatMessageRepository.save(chatMessage));
-        sendEventMessage(channelId, chatMessage);
+        sendNewChatMessageNotification(channelId, chatMessage);
         return returnChatMessageDTO;
     }
 
-    private void sendEventMessage(String channelId, ChatMessage chatMessage) {
-//        eventEmitterService.sendNewEventMessage(
-//                EventType.NEW_CHAT_MESSAGE,
-//                channelId,
-//                chatMessage.getChat().getUsers().stream()
-//                        .map(User::getId)
-//                        .filter(id -> !id.equals(getCurrentUser().getId()))
-//                        .toArray(Long[]::new));
+    private void sendNewChatMessageNotification(String channelId, ChatMessage chatMessage) {
+        List<Long> toSendUsersIds = chatMessage.getChat().getUsers().stream()
+                .map(User::getId)
+                .filter(id -> !id.equals(getCurrentUser().getId()))
+                .toList();
+        toSendUsersIds.forEach(userId -> sendNotification(channelId, userId));
+    }
+
+    private void sendNotification(String channelId, Long userId) {
+        notificationSender.sendNotification(NotificationQueueDTO.builder()
+                .eventType(EventType.NEW_CHAT_MESSAGE.name())
+                .destinationId(channelId)
+                .createdAt(getCurrentDateTime())
+                .userId(userId)
+                .build());
     }
 
     private ChatMessage createNewChatMessage(ChatMessageDTO chatMessageDTO, String channelId) {

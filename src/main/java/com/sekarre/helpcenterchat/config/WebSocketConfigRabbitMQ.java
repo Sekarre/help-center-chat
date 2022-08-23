@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -44,16 +43,16 @@ import static com.sekarre.helpcenterchat.util.SimpMessageHeaderUtil.getUserFromH
 public class WebSocketConfigRabbitMQ implements WebSocketMessageBrokerConfigurer {
 
 
-    @Value("${spring.rabbitmq.login}")
+    @Value("${spring.chat.rabbitmq.login}")
     private String login;
 
-    @Value("${spring.rabbitmq.password}")
+    @Value("${spring.chat.rabbitmq.password}")
     private String password;
 
-    @Value("${spring.rabbitmq.host}")
+    @Value("${spring.chat.rabbitmq.host}")
     private String host;
 
-    @Value("${spring.rabbitmq.port}")
+    @Value("${spring.chat.rabbitmq.port}")
     private Integer port;
 
     private final ChatAuthorizationService chatAuthorizationService;
@@ -84,8 +83,6 @@ public class WebSocketConfigRabbitMQ implements WebSocketMessageBrokerConfigurer
                 .setSendBufferSizeLimit(2000 * 1024 * 1024)
                 .setMessageSizeLimit(2000 * 1024 * 1024);
     }
-
-
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
