@@ -18,5 +18,5 @@ public interface ChatService {
 
     List<ChatMessageDTO> getAllChatMessages(String channelId);
 
-    List<ChatInfoDTO> getChatChatInfo();
+    List<ChatInfoDTO> getChatChannels();
 }

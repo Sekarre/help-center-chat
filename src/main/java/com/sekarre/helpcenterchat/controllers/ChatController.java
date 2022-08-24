@@ -43,6 +43,6 @@ public class ChatController {
 
     @GetMapping
     public ResponseEntity<List<ChatInfoDTO>> getChatChannelIds() {
-        return ResponseEntity.ok(chatService.getChatChatInfo());
+        return ResponseEntity.ok(chatService.getChatChannels());
     }
 }
