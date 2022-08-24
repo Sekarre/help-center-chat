@@ -1,5 +1,6 @@
 package com.sekarre.helpcenterchat.controllers;
 
+import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
 import com.sekarre.helpcenterchat.DTO.ChatMessageDTO;
 import com.sekarre.helpcenterchat.security.perms.AdminPermission;
@@ -35,10 +36,10 @@ public class ChatController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping
-//    public ResponseEntity<ChatInfoDTO> createNewChatWithUsers(@RequestBody ChatCreateRequestDTO chatCreateRequestDTO) {
-//        return ResponseEntity.ok(chatService.createNewChatWithUsers(chatCreateRequestDTO));
-//    }
+    @PostMapping
+    public ResponseEntity<ChatInfoDTO> createNewChatWithUsers(@RequestBody ChatCreateRequestDTO chatCreateRequestDTO) {
+        return ResponseEntity.ok(chatService.createNewChatWithUsers(chatCreateRequestDTO));
+    }
 
     @GetMapping
     public ResponseEntity<List<ChatInfoDTO>> getChatChannelIds() {
