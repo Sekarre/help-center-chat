@@ -8,6 +8,7 @@ import com.sekarre.helpcenterchat.domain.Chat;
 import com.sekarre.helpcenterchat.domain.ChatMessage;
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
+import com.sekarre.helpcenterchat.domain.enums.RoleName;
 import com.sekarre.helpcenterchat.exceptions.chat.ChatNotFoundException;
 import com.sekarre.helpcenterchat.mappers.ChatMapper;
 import com.sekarre.helpcenterchat.mappers.ChatMessageMapper;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.sekarre.helpcenterchat.security.UserDetailsHelper.checkForRole;
 import static com.sekarre.helpcenterchat.security.UserDetailsHelper.getCurrentUser;
 import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTimeFormatted;
 
@@ -101,10 +103,16 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatInfoDTO> getChatChatInfo() {
-        return chatRepository.findAll().stream()
-                .map(chatMapper::mapChatToChatInfoDTO)
-                .collect(Collectors.toList());
+    public List<ChatInfoDTO> getChatChannels() {
+        if (checkForRole(RoleName.ADMIN)) {
+            return chatRepository.findAll().stream()
+                    .map(chatMapper::mapChatToChatInfoDTO)
+                    .collect(Collectors.toList());
+        } else {
+            return chatRepository.findAllByUsersContaining(getCurrentUser()).stream()
+                    .map(chatMapper::mapChatToChatInfoDTO)
+                    .collect(Collectors.toList());
+        }
     }
 
     private String getUniqueChannelId() {

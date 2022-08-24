@@ -13,4 +13,5 @@ public class ChatInfoDTO {
     private Long id;
     private String channelName;
     private String channelId;
+    private Long issueId;
 }
