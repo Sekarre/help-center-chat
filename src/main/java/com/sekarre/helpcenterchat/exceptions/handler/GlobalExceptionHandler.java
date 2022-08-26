@@ -5,6 +5,8 @@ import com.sekarre.helpcenterchat.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +15,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @MessageExceptionHandler(MethodArgumentNotValidException.class)
+    public void handleAppRuntimeException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage());
+    }
 
     @ExceptionHandler(value = AppRuntimeException.class)
     public ResponseEntity<ErrorMessage> handleAppRuntimeException(AppRuntimeException e) {
