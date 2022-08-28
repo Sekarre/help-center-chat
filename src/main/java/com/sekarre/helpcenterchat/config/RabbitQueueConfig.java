@@ -12,11 +12,18 @@ public class RabbitQueueConfig {
     @Value("${notification.queue.name}")
     private String queueName;
 
+    @Value("${notification.limiter.queue.name}")
+    private String notificationQueueLimiterName;
+
     @Bean
     public Queue notificationQueue() {
         return new Queue(queueName, true);
     }
 
+    @Bean
+    public Queue notificationLimiterQueue() {
+        return new Queue(notificationQueueLimiterName, true);
+    }
 
     @Bean
     public MappingJackson2HttpMessageConverter notificationJackson2HttpMessageConverter() {

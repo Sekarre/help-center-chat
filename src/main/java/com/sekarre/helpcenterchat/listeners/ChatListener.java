@@ -1,8 +1,10 @@
 package com.sekarre.helpcenterchat.listeners;
 
 import com.sekarre.helpcenterchat.domain.User;
+import com.sekarre.helpcenterchat.domain.enums.EventType;
 import com.sekarre.helpcenterchat.exceptions.handler.EventListenerErrorHandling;
 import com.sekarre.helpcenterchat.factories.ChatMessageBotFactory;
+import com.sekarre.helpcenterchat.services.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.sekarre.helpcenterchat.util.SimpMessageHeaderUtil.getChannelIdFromDestinationHeader;
 import static com.sekarre.helpcenterchat.util.SimpMessageHeaderUtil.getUserFromHeaders;
 
 
@@ -26,7 +29,7 @@ public class ChatListener {
 
     private final Map<String, String> destinationTracker = new HashMap<>();
     private final SimpMessagingTemplate simpMessagingTemplate;
-//    private final EventNotificationService eventNotificationService;
+    private final NotificationService notificationService;
 
     @EventListenerErrorHandling
     @EventListener
@@ -38,8 +41,8 @@ public class ChatListener {
             return;
         }
         destinationTracker.remove(headers.getSessionId());
-//        eventNotificationService.startNotificationForDestination(
-//                getChannelIdFromDestinationHeader(destination), user.getId(), EventType.NEW_CHAT_MESSAGE);
+        notificationService.startNotificationForDestination(
+                getChannelIdFromDestinationHeader(destination), user.getId(), EventType.NEW_CHAT_MESSAGE);
         simpMessagingTemplate.convertAndSend(destination,
                 ChatMessageBotFactory.getGoodbyeChatMessage(user.getFirstName() + " " + user.getLastName()));
     }
@@ -54,8 +57,8 @@ public class ChatListener {
             return;
         }
         destinationTracker.put(headers.getSessionId(), destination);
-//        eventNotificationService.stopNotificationForDestination(
-//                getChannelIdFromDestinationHeader(destination), user.getId(), EventType.NEW_CHAT_MESSAGE);
+        notificationService.stopNotificationForDestination(
+                getChannelIdFromDestinationHeader(destination), user.getId(), EventType.NEW_CHAT_MESSAGE);
         simpMessagingTemplate.convertAndSend(destination,
                 ChatMessageBotFactory.getWelcomeChatMessage(user.getFirstName() + " " + user.getLastName()));
     }

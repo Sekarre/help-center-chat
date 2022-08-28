@@ -3,7 +3,6 @@ package com.sekarre.helpcenterchat.services.impl;
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
 import com.sekarre.helpcenterchat.DTO.ChatMessageDTO;
-import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.Chat;
 import com.sekarre.helpcenterchat.domain.ChatMessage;
 import com.sekarre.helpcenterchat.domain.User;
@@ -15,8 +14,8 @@ import com.sekarre.helpcenterchat.mappers.ChatMessageMapper;
 import com.sekarre.helpcenterchat.repositories.ChatMessageRepository;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
 import com.sekarre.helpcenterchat.services.ChatService;
+import com.sekarre.helpcenterchat.services.NotificationService;
 import com.sekarre.helpcenterchat.services.UserService;
-import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import com.sekarre.helpcenterchat.util.RandomStringGeneratorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
 
 import static com.sekarre.helpcenterchat.security.UserDetailsHelper.checkForRole;
 import static com.sekarre.helpcenterchat.security.UserDetailsHelper.getCurrentUser;
-import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTimeFormatted;
 
 
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatMessageMapper chatMessageMapper;
     private final ChatMapper chatMapper;
     private final UserService userService;
-    private final NotificationSender notificationSender;
+    private final NotificationService notificationService;
 
 
     @Override
@@ -74,16 +72,7 @@ public class ChatServiceImpl implements ChatService {
                 .map(User::getId)
                 .filter(id -> !id.equals(getCurrentUser().getId()))
                 .toList();
-        toSendUsersIds.forEach(userId -> sendNotification(channelId, userId));
-    }
-
-    private void sendNotification(String channelId, Long userId) {
-        notificationSender.sendNotification(NotificationQueueDTO.builder()
-                .eventType(EventType.NEW_CHAT_MESSAGE.name())
-                .destinationId(channelId)
-                .createdAt(getCurrentDateTimeFormatted())
-                .userId(userId)
-                .build());
+        toSendUsersIds.forEach(userId -> notificationService.sendNotification(channelId, userId, EventType.NEW_CHAT_MESSAGE));
     }
 
     private ChatMessage createNewChatMessage(ChatMessageDTO chatMessageDTO, String channelId) {
