@@ -31,7 +31,6 @@ public class ChatListener {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final NotificationService notificationService;
 
-    @EventListenerErrorHandling
     @EventListener
     public void onDisconnectEvent(SessionDisconnectEvent event) {
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
@@ -47,7 +46,6 @@ public class ChatListener {
                 ChatMessageBotFactory.getGoodbyeChatMessage(user.getFirstName() + " " + user.getLastName()));
     }
 
-    @EventListenerErrorHandling
     @EventListener
     public void onSubscribeEvent(SessionSubscribeEvent event) {
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @MessageExceptionHandler(MethodArgumentNotValidException.class)
-    public void handleAppRuntimeException(MethodArgumentNotValidException e) {
+    @MessageExceptionHandler(Throwable.class)
+    @SendToUser("/topic/private.errors")
+    public ResponseEntity<ErrorMessage> handleWebSocketException(Throwable e) {
         log.error(e.getMessage());
+        return new ResponseEntity<>(getCustomErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = AppRuntimeException.class)

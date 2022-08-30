@@ -23,7 +23,7 @@ public class NotificationLimiterQueueSender {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final Queue notificationQueue;
+    private final Queue notificationLimiterQueue;
     private final ObjectMapper objectMapper;
 
     private static final String TYPE_ID_HEADER_NAME = "notificationLimiterQueueDTO";
@@ -31,7 +31,7 @@ public class NotificationLimiterQueueSender {
     public void send(NotificationLimiterQueueDTO notificationLimiterQueueDTO) {
         try {
             Message jsonMessage = getMessage(notificationLimiterQueueDTO);
-            rabbitTemplate.send(notificationQueue.getName(), jsonMessage);
+            rabbitTemplate.send(notificationLimiterQueue.getName(), jsonMessage);
         } catch (JsonProcessingException e) {
             throw new NotificationSendFailedException("Notification send failure for notification: " + notificationLimiterQueueDTO.toString());
         }
