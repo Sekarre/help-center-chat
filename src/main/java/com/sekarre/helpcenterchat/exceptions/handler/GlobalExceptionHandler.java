@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
-import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,10 +17,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @MessageExceptionHandler(Throwable.class)
-    @SendToUser("/topic/private.errors")
-    public ResponseEntity<ErrorMessage> handleWebSocketException(Throwable e) {
+    @SendToUser(value = "/topic/private.errors")
+    public ErrorMessage handleWebSocketException(Throwable e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(getCustomErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return getCustomErrorMessage(e.getMessage());
     }
 
     @ExceptionHandler(value = AppRuntimeException.class)

@@ -42,7 +42,7 @@ import static com.sekarre.helpcenterchat.util.SimpMessageHeaderUtil.getUserFromH
 @Configuration
 public class WebSocketConfigRabbitMQ implements WebSocketMessageBrokerConfigurer {
 
-    private static final String ERRORS = "errors";
+    public static final String ERRORS = "errors";
 
     @Value("${spring.chat.rabbitmq.login}")
     private String login;

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.sekarre.helpcenterchat.config.WebSocketConfigRabbitMQ.ERRORS;
 import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTimeFormatted;
 
 @Slf4j
@@ -23,12 +24,16 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void startNotificationForDestination(String destinationId, Long userId, EventType eventType) {
-        notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, true));
+        if (!ERRORS.equals(destinationId)) {
+            notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, true));
+        }
     }
 
     @Override
     public void stopNotificationForDestination(String destinationId, Long userId, EventType eventType) {
-        notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, false));
+        if (!ERRORS.equals(destinationId)) {
+            notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, false));
+        }
     }
 
     @Override
