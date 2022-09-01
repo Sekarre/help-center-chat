@@ -12,13 +12,13 @@ import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import static com.sekarre.helpcenterchat.util.MessageBrokerJsonHeaders.TYPE_ID_HEADER;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@Service
 public class NotificationLimiterQueueSender {
 
     private final RabbitTemplate rabbitTemplate;

@@ -11,5 +11,4 @@ public class HelpCenterChatApplication {
     public static void main(String[] args) {
         SpringApplication.run(HelpCenterChatApplication.class, args);
     }
-
 }
