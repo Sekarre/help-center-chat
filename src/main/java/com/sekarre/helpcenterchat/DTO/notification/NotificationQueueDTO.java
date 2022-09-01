@@ -1,5 +1,6 @@
 package com.sekarre.helpcenterchat.DTO.notification;
 
+import com.sekarre.helpcenterchat.domain.enums.EventType;
 import lombok.*;
 
 import java.io.Serial;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class NotificationQueueDTO implements Serializable {
 
     @Serial
@@ -22,4 +24,11 @@ public class NotificationQueueDTO implements Serializable {
     private String destinationId;
     private String eventType;
     private String createdAt;
+
+    public NotificationQueueDTO(String destinationId, Long userId, EventType eventType, String createdAt) {
+        this.eventType = eventType.name();
+        this.destinationId = destinationId;
+        this.createdAt = createdAt;
+        this.userId = userId;
+    }
 }

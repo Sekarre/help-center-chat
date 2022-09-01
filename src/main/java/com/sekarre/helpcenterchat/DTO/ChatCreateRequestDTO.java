@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Builder(toBuilder = true)
 public class ChatCreateRequestDTO {
 

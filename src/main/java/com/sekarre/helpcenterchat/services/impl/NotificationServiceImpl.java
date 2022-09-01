@@ -25,37 +25,19 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void startNotificationForDestination(String destinationId, Long userId, EventType eventType) {
         if (!ERRORS.equals(destinationId)) {
-            notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, true));
+            notificationLimiterQueueSender.send(new NotificationLimiterQueueDTO(destinationId, eventType.name(), userId, true));
         }
     }
 
     @Override
     public void stopNotificationForDestination(String destinationId, Long userId, EventType eventType) {
         if (!ERRORS.equals(destinationId)) {
-            notificationLimiterQueueSender.send(getNotificationLimiterQueueDTO(destinationId, userId, eventType, false));
+            notificationLimiterQueueSender.send(new NotificationLimiterQueueDTO(destinationId, eventType.name(), userId, false));
         }
     }
 
     @Override
     public void sendNotification(String destinationId, Long userId, EventType eventType) {
-        notificationQueueSender.send(getNotificationQueueDTO(destinationId, userId, eventType));
-    }
-
-    private NotificationQueueDTO getNotificationQueueDTO(String destinationId, Long userId, EventType eventType) {
-        return NotificationQueueDTO.builder()
-                .eventType(eventType.name())
-                .destinationId(destinationId)
-                .createdAt(getCurrentDateTimeFormatted())
-                .userId(userId)
-                .build();
-    }
-
-    private NotificationLimiterQueueDTO getNotificationLimiterQueueDTO(String destinationId, Long userId, EventType eventType, boolean isLimited) {
-        return NotificationLimiterQueueDTO.builder()
-                .eventType(eventType.name())
-                .destinationId(destinationId)
-                .userId(userId)
-                .isLimited(isLimited)
-                .build();
+        notificationQueueSender.send(new NotificationQueueDTO(destinationId, userId, eventType, getCurrentDateTimeFormatted()));
     }
 }
