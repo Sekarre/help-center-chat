@@ -5,7 +5,7 @@ import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
 import com.sekarre.helpcenterchat.services.NotificationService;
 import com.sekarre.helpcenterchat.services.notification.NotificationLimiterQueueSender;
-import com.sekarre.helpcenterchat.services.notification.NotificationQueueSender;
+import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import static com.sekarre.helpcenterchat.util.DateUtil.getCurrentDateTimeFormatt
 public class NotificationServiceImpl implements NotificationService {
 
 
-    private final NotificationQueueSender notificationQueueSender;
+    private final NotificationSender notificationSender;
     private final NotificationLimiterQueueSender notificationLimiterQueueSender;
 
     @Override
@@ -38,6 +38,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendNotification(String destinationId, Long userId, EventType eventType) {
-        notificationQueueSender.send(new NotificationQueueDTO(destinationId, userId, eventType, getCurrentDateTimeFormatted()));
+        notificationSender.send(new NotificationQueueDTO(destinationId, userId, eventType, getCurrentDateTimeFormatted()));
     }
 }

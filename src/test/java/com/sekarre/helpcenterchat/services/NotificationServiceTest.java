@@ -5,7 +5,7 @@ import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
 import com.sekarre.helpcenterchat.services.impl.NotificationServiceImpl;
 import com.sekarre.helpcenterchat.services.notification.NotificationLimiterQueueSender;
-import com.sekarre.helpcenterchat.services.notification.NotificationQueueSender;
+import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 class NotificationServiceTest {
 
     @Mock
-    private NotificationQueueSender notificationQueueSender;
+    private NotificationSender notificationSender;
 
     @Mock
     private NotificationLimiterQueueSender notificationLimiterQueueSender;
@@ -32,7 +32,7 @@ class NotificationServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        notificationService = new NotificationServiceImpl(notificationQueueSender, notificationLimiterQueueSender);
+        notificationService = new NotificationServiceImpl(notificationSender, notificationLimiterQueueSender);
     }
 
     @Test
@@ -75,6 +75,6 @@ class NotificationServiceTest {
         notificationService.sendNotification(destinationId, userId, eventType);
 
         //then
-        verify(notificationQueueSender, times(1)).send(any(NotificationQueueDTO.class));
+        verify(notificationSender, times(1)).send(any(NotificationQueueDTO.class));
     }
 }

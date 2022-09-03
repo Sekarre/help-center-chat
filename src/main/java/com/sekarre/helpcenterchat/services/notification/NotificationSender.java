@@ -19,7 +19,7 @@ import static com.sekarre.helpcenterchat.util.MessageBrokerJsonHeaders.TYPE_ID_H
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class NotificationQueueSender {
+public class NotificationSender {
 
     private final RabbitTemplate rabbitTemplate;
 
