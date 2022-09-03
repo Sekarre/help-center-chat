@@ -1,9 +1,8 @@
-package com.sekarre.helpcenterchat.services.impl;
+package com.sekarre.helpcenterchat.services.user;
 
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.exceptions.user.UserNotFoundException;
 import com.sekarre.helpcenterchat.repositories.UserRepository;
-import com.sekarre.helpcenterchat.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,8 @@
-package com.sekarre.helpcenterchat.services;
+package com.sekarre.helpcenterchat.services.notification;
 
 import com.sekarre.helpcenterchat.DTO.notification.NotificationLimiterQueueDTO;
 import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
-import com.sekarre.helpcenterchat.services.impl.NotificationServiceImpl;
-import com.sekarre.helpcenterchat.services.notification.NotificationLimiterQueueSender;
-import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,7 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class NotificationServiceTest {
+class NotificationServiceImplTest {
 
     @Mock
     private NotificationSender notificationSender;

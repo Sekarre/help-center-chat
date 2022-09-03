@@ -1,11 +1,12 @@
-package com.sekarre.helpcenterchat.services.security;
+package com.sekarre.helpcenterchat.services.notification.security;
 
 import com.sekarre.helpcenterchat.SecurityContextMockSetup;
 import com.sekarre.helpcenterchat.domain.Chat;
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.exceptions.chat.ChatAuthorizationException;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
-import com.sekarre.helpcenterchat.services.security.impl.ChatAuthorizationServiceImpl;
+import com.sekarre.helpcenterchat.services.chat.security.ChatAuthorizationService;
+import com.sekarre.helpcenterchat.services.chat.security.impl.ChatAuthorizationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -44,10 +45,10 @@ class ChatAuthorizationServiceTest extends SecurityContextMockSetup {
         when(chatRepository.findByChannelIdWithUsers(any(String.class))).thenReturn(Optional.ofNullable(chat));
 
         //when
-        boolean response = chatAuthorizationService.checkIfUserAuthorizedToJoinChannel(channelId);
+        boolean result = chatAuthorizationService.checkIfUserAuthorizedToJoinChannel(channelId);
 
         //then
-        assertTrue(response);
+        assertTrue(result);
         verify(chatRepository, times(1)).findByChannelIdWithUsers(channelId);
     }
 
@@ -72,10 +73,10 @@ class ChatAuthorizationServiceTest extends SecurityContextMockSetup {
         when(chatRepository.findByChannelIdWithUsers(any(String.class))).thenReturn(Optional.ofNullable(chat));
 
         //when
-        boolean response = chatAuthorizationService.checkIfUserAuthorizedToJoinChannel(user, channelId);
+        boolean result = chatAuthorizationService.checkIfUserAuthorizedToJoinChannel(user, channelId);
 
         //then
-        assertTrue(response);
+        assertTrue(result);
         verify(chatRepository, times(1)).findByChannelIdWithUsers(channelId);
     }
 

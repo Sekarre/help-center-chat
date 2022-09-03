@@ -2,9 +2,8 @@ package com.sekarre.helpcenterchat.listeners;
 
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
-import com.sekarre.helpcenterchat.exceptions.handler.EventListenerErrorHandling;
 import com.sekarre.helpcenterchat.factories.ChatMessageBotFactory;
-import com.sekarre.helpcenterchat.services.NotificationService;
+import com.sekarre.helpcenterchat.services.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

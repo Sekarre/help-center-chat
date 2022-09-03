@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.services;
+package com.sekarre.helpcenterchat.services.chat;
 
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
@@ -13,7 +13,8 @@ import com.sekarre.helpcenterchat.mappers.ChatMapper;
 import com.sekarre.helpcenterchat.mappers.ChatMessageMapper;
 import com.sekarre.helpcenterchat.repositories.ChatMessageRepository;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
-import com.sekarre.helpcenterchat.services.impl.ChatServiceImpl;
+import com.sekarre.helpcenterchat.services.notification.NotificationService;
+import com.sekarre.helpcenterchat.services.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.sekarre.helpcenterchat.factories.ChatMessageMockFactory.getChatMessageDTOMock;
+import static com.sekarre.helpcenterchat.factories.ChatMessageMockFactory.getChatMessageMock;
 import static com.sekarre.helpcenterchat.factories.ChatMockFactory.*;
 import static com.sekarre.helpcenterchat.factories.UserMockFactory.getDefaultUserMock;
 import static com.sekarre.helpcenterchat.factories.UserMockFactory.getUserWithRolesMock;
@@ -31,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class ChatServiceTest extends SecurityContextMockSetup {
+class ChatServiceImplTest extends SecurityContextMockSetup {
 
     @Mock
     private ChatMessageRepository chatMessageRepository;
@@ -74,11 +77,11 @@ class ChatServiceTest extends SecurityContextMockSetup {
         when(userService.getUsersByIds(any(Long[].class))).thenReturn(Collections.singletonList(user));
 
         //when
-        ChatInfoDTO response = chatService.createNewChatWithUsers(chatCreateRequestDTO);
+        ChatInfoDTO result = chatService.createNewChatWithUsers(chatCreateRequestDTO);
 
         //then
-        assertNotNull(response);
-        assertEquals(response.getChannelName(), chatCreateRequestDTO.getChannelName(),
+        assertNotNull(result);
+        assertEquals(result.getChannelName(), chatCreateRequestDTO.getChannelName(),
                 "Channel name are not equal");
         verify(chatRepository, times(1)).save(any(Chat.class));
         verify(chatMapper, times(1)).mapChatToChatInfoDTO(chat);
@@ -109,17 +112,17 @@ class ChatServiceTest extends SecurityContextMockSetup {
         when(chatMessageMapper.mapChatMessageDTOToMessage(any(ChatMessageDTO.class))).thenReturn(chatMessage);
         when(chatRepository.findByChannelIdWithUsers(any(String.class))).thenReturn(Optional.ofNullable(chat));
         when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessage);
-        when(chatMessageMapper.mapMessageToChatMessageDTO(any(ChatMessage.class))).thenReturn(chatMessageDTO);
+        when(chatMessageMapper.mapChatMessageToChatMessageDTO(any(ChatMessage.class))).thenReturn(chatMessageDTO);
 
         //when
-        ChatMessageDTO response = chatService.savePrivateChatMessage(chatMessageDTO, channelId);
+        ChatMessageDTO result = chatService.savePrivateChatMessage(chatMessageDTO, channelId);
 
         //then
-        assertNotNull(response);
+        assertNotNull(result);
         verify(chatMessageMapper, times(1)).mapChatMessageDTOToMessage(chatMessageDTO);
         verify(chatRepository, times(1)).findByChannelIdWithUsers(channelId);
         verify(chatMessageRepository, times(1)).save(chatMessage);
-        verify(chatMessageMapper, times(1)).mapMessageToChatMessageDTO(chatMessage);
+        verify(chatMessageMapper, times(1)).mapChatMessageToChatMessageDTO(chatMessage);
     }
 
     @Test
@@ -130,17 +133,17 @@ class ChatServiceTest extends SecurityContextMockSetup {
         final ChatMessage chatMessage = getChatMessageMock();
         when(chatRepository.findByChannelId(any(String.class))).thenReturn(Optional.ofNullable(chat));
         when(chatMessageRepository.findAllByChatIdOrderByCreatedDateTime(any(Long.class))).thenReturn(Collections.singletonList(chatMessage));
-        when(chatMessageMapper.mapMessageToChatMessageDTO(any(ChatMessage.class))).thenReturn(chatMessageDTO);
+        when(chatMessageMapper.mapChatMessageToChatMessageDTO(any(ChatMessage.class))).thenReturn(chatMessageDTO);
 
         //when
-        List<ChatMessageDTO> chatMessages = chatService.getAllChatMessages(channelId);
+        List<ChatMessageDTO> result = chatService.getAllChatMessages(channelId);
 
         //then
-        assertNotNull(chatMessages);
-        assertEquals(1, chatMessages.size());
+        assertNotNull(result);
+        assertEquals(1, result.size());
         verify(chatRepository, times(1)).findByChannelId(channelId);
         verify(chatMessageRepository, times(1)).findAllByChatIdOrderByCreatedDateTime(chat.getId());
-        verify(chatMessageMapper, times(1)).mapMessageToChatMessageDTO(chatMessage);
+        verify(chatMessageMapper, times(1)).mapChatMessageToChatMessageDTO(chatMessage);
     }
 
     @Test
@@ -153,11 +156,11 @@ class ChatServiceTest extends SecurityContextMockSetup {
         when(chatMapper.mapChatToChatInfoDTO(any(Chat.class))).thenReturn(chatInfoDTO);
 
         //when
-        List<ChatInfoDTO> chatChannels = chatService.getChatChannels();
+        List<ChatInfoDTO> result = chatService.getChatChannels();
 
         //then
-        assertNotNull(chatChannels);
-        assertEquals(1, chatChannels.size());
+        assertNotNull(result);
+        assertEquals(1, result.size());
         verify(chatRepository, times(1)).findAllByUsersContaining(any(User.class));
         verify(chatMapper, times(1)).mapChatToChatInfoDTO(chat);
     }
@@ -172,11 +175,11 @@ class ChatServiceTest extends SecurityContextMockSetup {
         when(chatMapper.mapChatToChatInfoDTO(any(Chat.class))).thenReturn(chatInfoDTO);
 
         //when
-        List<ChatInfoDTO> chatChannels = chatService.getChatChannels();
+        List<ChatInfoDTO> result = chatService.getChatChannels();
 
         //then
-        assertNotNull(chatChannels);
-        assertEquals(1, chatChannels.size());
+        assertNotNull(result);
+        assertEquals(1, result.size());
         verify(chatRepository, times(1)).findAll();
         verify(chatMapper, times(1)).mapChatToChatInfoDTO(chat);
     }

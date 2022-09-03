@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.services.security;
+package com.sekarre.helpcenterchat.services.chat.security;
 
 
 import com.sekarre.helpcenterchat.domain.User;

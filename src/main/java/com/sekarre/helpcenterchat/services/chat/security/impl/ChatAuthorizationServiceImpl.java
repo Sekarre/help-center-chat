@@ -1,11 +1,11 @@
-package com.sekarre.helpcenterchat.services.security.impl;
+package com.sekarre.helpcenterchat.services.chat.security.impl;
 
 import com.sekarre.helpcenterchat.domain.Chat;
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.exceptions.chat.ChatAuthorizationException;
 import com.sekarre.helpcenterchat.exceptions.chat.ChatNotFoundException;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
-import com.sekarre.helpcenterchat.services.security.ChatAuthorizationService;
+import com.sekarre.helpcenterchat.services.chat.security.ChatAuthorizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

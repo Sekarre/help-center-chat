@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.services.impl;
+package com.sekarre.helpcenterchat.services.chat;
 
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
@@ -13,9 +13,8 @@ import com.sekarre.helpcenterchat.mappers.ChatMapper;
 import com.sekarre.helpcenterchat.mappers.ChatMessageMapper;
 import com.sekarre.helpcenterchat.repositories.ChatMessageRepository;
 import com.sekarre.helpcenterchat.repositories.ChatRepository;
-import com.sekarre.helpcenterchat.services.ChatService;
-import com.sekarre.helpcenterchat.services.NotificationService;
-import com.sekarre.helpcenterchat.services.UserService;
+import com.sekarre.helpcenterchat.services.notification.NotificationService;
+import com.sekarre.helpcenterchat.services.user.UserService;
 import com.sekarre.helpcenterchat.util.RandomStringGeneratorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +61,7 @@ public class ChatServiceImpl implements ChatService {
     public ChatMessageDTO savePrivateChatMessage(ChatMessageDTO chatMessageDTO, String channelId) {
         log.debug("User id: " + getCurrentUser().getId() + " message: " + chatMessageDTO.getMessage());
         ChatMessage chatMessage = createNewChatMessage(chatMessageDTO, channelId);
-        ChatMessageDTO returnChatMessageDTO = chatMessageMapper.mapMessageToChatMessageDTO(chatMessageRepository.save(chatMessage));
+        ChatMessageDTO returnChatMessageDTO = chatMessageMapper.mapChatMessageToChatMessageDTO(chatMessageRepository.save(chatMessage));
         sendNewChatMessageNotification(channelId, chatMessage);
         return returnChatMessageDTO;
     }
@@ -87,7 +86,7 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatMessageDTO> getAllChatMessages(String channelId) {
         Chat chat = getChatByChannelId(channelId);
         return chatMessageRepository.findAllByChatIdOrderByCreatedDateTime(chat.getId()).stream()
-                .map(chatMessageMapper::mapMessageToChatMessageDTO)
+                .map(chatMessageMapper::mapChatMessageToChatMessageDTO)
                 .collect(Collectors.toList());
     }
 

@@ -1,8 +1,7 @@
-package com.sekarre.helpcenterchat.services;
+package com.sekarre.helpcenterchat.services.user;
 
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.repositories.UserRepository;
-import com.sekarre.helpcenterchat.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -38,12 +37,12 @@ class UserServiceTest {
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
 
         //when
-        List<User> response = userService.getUsersByIds(usersIds);
+        List<User> result = userService.getUsersByIds(usersIds);
 
         //then
-        assertNotNull(response);
-        assertEquals(usersIds.length, response.size());
-        assertEquals(user, response.get(response.size() - 1));
+        assertNotNull(result);
+        assertEquals(usersIds.length, result.size());
+        assertEquals(user, result.get(result.size() - 1));
         verify(userRepository, times(1)).findById(usersIds[0]);
         verify(userRepository, times(1)).findById(usersIds[1]);
     }

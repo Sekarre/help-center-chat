@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.util;
+package com.sekarre.helpcenterchat.testutil;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

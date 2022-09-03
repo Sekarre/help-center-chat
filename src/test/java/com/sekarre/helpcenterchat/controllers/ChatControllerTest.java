@@ -3,7 +3,7 @@ package com.sekarre.helpcenterchat.controllers;
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;
 import com.sekarre.helpcenterchat.DTO.ChatInfoDTO;
 import com.sekarre.helpcenterchat.DTO.ChatMessageDTO;
-import com.sekarre.helpcenterchat.services.ChatService;
+import com.sekarre.helpcenterchat.services.chat.ChatService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,9 +14,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 
+import static com.sekarre.helpcenterchat.factories.ChatMessageMockFactory.getChatMessageDTOMock;
 import static com.sekarre.helpcenterchat.factories.ChatMockFactory.*;
 import static com.sekarre.helpcenterchat.util.DateUtil.getDateTimeFormatted;
-import static com.sekarre.helpcenterchat.util.TestUtil.convertObjectToJsonBytes;
+import static com.sekarre.helpcenterchat.testutil.TestUtil.convertObjectToJsonBytes;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

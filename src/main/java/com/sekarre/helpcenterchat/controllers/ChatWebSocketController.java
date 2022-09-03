@@ -1,7 +1,7 @@
 package com.sekarre.helpcenterchat.controllers;
 
 import com.sekarre.helpcenterchat.DTO.ChatMessageDTO;
-import com.sekarre.helpcenterchat.services.ChatService;
+import com.sekarre.helpcenterchat.services.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

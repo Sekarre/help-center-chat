@@ -3,7 +3,7 @@ package com.sekarre.helpcenterchat.config;
 import com.sekarre.helpcenterchat.domain.User;
 import com.sekarre.helpcenterchat.repositories.UserRepository;
 import com.sekarre.helpcenterchat.security.jwt.JwtTokenUtil;
-import com.sekarre.helpcenterchat.services.security.ChatAuthorizationService;
+import com.sekarre.helpcenterchat.services.chat.security.ChatAuthorizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

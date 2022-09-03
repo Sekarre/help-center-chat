@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.services;
+package com.sekarre.helpcenterchat.services.notification;
 
 import com.sekarre.helpcenterchat.domain.enums.EventType;
 

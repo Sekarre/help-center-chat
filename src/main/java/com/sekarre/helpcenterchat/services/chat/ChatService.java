@@ -1,4 +1,4 @@
-package com.sekarre.helpcenterchat.services;
+package com.sekarre.helpcenterchat.services.chat;
 
 
 import com.sekarre.helpcenterchat.DTO.ChatCreateRequestDTO;

@@ -1,11 +1,8 @@
-package com.sekarre.helpcenterchat.services.impl;
+package com.sekarre.helpcenterchat.services.notification;
 
 import com.sekarre.helpcenterchat.DTO.notification.NotificationLimiterQueueDTO;
 import com.sekarre.helpcenterchat.DTO.notification.NotificationQueueDTO;
 import com.sekarre.helpcenterchat.domain.enums.EventType;
-import com.sekarre.helpcenterchat.services.NotificationService;
-import com.sekarre.helpcenterchat.services.notification.NotificationLimiterQueueSender;
-import com.sekarre.helpcenterchat.services.notification.NotificationSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
